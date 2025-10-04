@@ -2,7 +2,6 @@ import { FlatCompat } from '@eslint/eslintrc';
 import eslintJs from '@eslint/js';
 import prettierConfig from 'eslint-config-prettier';
 import prettierPlugin from 'eslint-plugin-prettier/recommended';
-import tailwind from 'eslint-plugin-tailwindcss';
 import { defineConfig } from 'eslint/config';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
@@ -22,8 +21,6 @@ export default defineConfig(
   // Recommended rules from the Prettier plugin
   prettierPlugin,
 
-  ...tailwind.configs['flat/recommended'],
-
   // Directories ignored by ESLint
   {
     ignores: ['node_modules', 'dist', '**/*.{js,cjs}'],
@@ -41,6 +38,29 @@ export default defineConfig(
           bracketSameLine: false,
           tabWidth: 2,
           endOfLine: 'auto',
+          plugins: [
+            '@ianvs/prettier-plugin-sort-imports',
+            'prettier-plugin-tailwindcss',
+          ],
+          tailwindStylesheet: './src/app/index.css',
+          importOrder: [
+            '^(react/(.*)$)|^(react$)',
+            '^(next/(.*)$)|^(next$)',
+            '<THIRD_PARTY_MODULES>',
+            '',
+            '^types$',
+            '^@/types/(.*)$',
+            '^@/config/(.*)$',
+            '^@/lib/(.*)$',
+            '^@/hooks/(.*)$',
+            '^@/components/ui/(.*)$',
+            '^@/components/(.*)$',
+            '^@/styles/(.*)$',
+            '^@/app/(.*)$',
+            '',
+            '^[./]',
+          ],
+          importOrderParserPlugins: ['typescript', 'jsx', 'decorators-legacy'],
         },
       ],
     },
@@ -70,6 +90,7 @@ export default defineConfig(
       '@typescript-eslint/triple-slash-reference': 'off',
       'tailwindcss/no-custom-classname': 'off',
       'react-hooks/rules-of-hooks': 'error',
+      'classnames-order': 'off',
     },
   }),
 );
